@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Notes Manager | Abdirahman Adan</title>
+    <title>Abdirahman Adan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -27,54 +27,42 @@
         .app-grid { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
 
         .mobile-header {
-            display: none;
-            padding: 1rem;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: none; padding: 1rem; background: var(--surface);
+            border-bottom: 1px solid var(--border); justify-content: space-between;
+            align-items: center; position: sticky; top: 0; z-index: 100;
         }
         
         .sidebar { 
-            background: var(--surface); 
-            border-right: 1px solid var(--border); 
-            display: flex; 
-            flex-direction: column; 
-            padding: 1.5rem; 
+            background: var(--surface); border-right: 1px solid var(--border); 
+            display: flex; flex-direction: column; padding: 1.5rem; 
             transition: transform 0.3s ease;
         }
 
         .nav-item { 
-            padding: 0.75rem 1rem; 
-            border-radius: var(--radius); 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            margin-bottom: 0.5rem; 
-            transition: 0.2s; 
+            padding: 0.75rem 1rem; border-radius: var(--radius); 
+            cursor: pointer; display: flex; align-items: center; 
+            gap: 10px; margin-bottom: 0.5rem; transition: 0.2s; 
             position: relative;
         }
         .nav-item:hover { background: var(--border); }
         .nav-item.active { background: var(--primary); color: white; }
 
-        /* Subject Action Buttons */
-        .subject-actions {
-            display: none;
-            gap: 8px;
-            margin-left: auto;
-        }
-        .nav-item:hover .subject-actions { display: flex; }
-        .action-icon {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            transition: 0.2s;
-            padding: 4px;
-        }
+        .subject-actions, .semester-actions { display: none; gap: 8px; margin-left: auto; }
+        .nav-item:hover .subject-actions, .semester-header:hover .semester-actions { display: flex; }
+        .action-icon { font-size: 0.85rem; opacity: 0.7; transition: 0.2s; padding: 4px; }
         .action-icon:hover { opacity: 1; transform: scale(1.1); }
+
+        .semester-group { margin-bottom: 1rem; }
+        .semester-header { 
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; 
+            color: var(--text-muted); margin-bottom: 0.5rem; padding: 0.5rem; 
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; border-radius: var(--radius); transition: 0.2s;
+        }
+        .semester-header:hover { background: var(--border); color: var(--text); }
+        .semester-header i.fa-chevron-down { transition: transform 0.3s ease; font-size: 0.7rem; margin-right: 5px; }
+        .semester-group.collapsed .subject-list-container { display: none; }
+        .semester-group.collapsed .semester-header i.fa-chevron-down { transform: rotate(-90deg); }
 
         .main { overflow-y: auto; padding: 2rem; position: relative; }
         .toolbar { display: flex; gap: 1rem; margin-bottom: 2rem; align-items: center; flex-wrap: wrap; }
@@ -88,9 +76,14 @@
         .card-body { padding: 0 1.25rem 1.25rem; display: none; }
         .card-body.open { display: block; }
 
-        .editor-tools { display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; overflow-x: auto; }
-        .tool-btn { height: 36px; min-width: 36px; padding: 5px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); border-radius: 4px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .rich-editor { min-height: 200px; padding: 1rem; border: 1px solid var(--border); border-radius: 0 0 8px 8px; outline: none; background: var(--bg); }
+        .editor-tools { display: flex; align-items: center; gap: 6px; padding: 8px; background: var(--bg); border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; overflow-x: auto; }
+        .tool-btn { height: 32px; min-width: 32px; padding: 4px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); border-radius: 6px; color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem; transition: 0.2s; }
+        .tool-btn:hover { background: var(--border); }
+        
+        .rich-editor { min-height: 200px; padding: 1rem; border: 1px solid var(--border); border-radius: 0 0 8px 8px; outline: none; background: var(--bg); line-height: 1.6; }
+        .rich-editor h1 { font-size: 1.6rem; margin: 0.5rem 0; }
+        .rich-editor h2 { font-size: 1.3rem; margin: 0.4rem 0; }
+        .rich-editor ul, .rich-editor ol { padding-left: 25px; margin: 0.5rem 0; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
         .modal-box { background: var(--bg); padding: 1.5rem; border-radius: var(--radius); width: 92%; max-width: 450px; box-shadow: var(--shadow); transform: scale(0.9); transition: 0.3s; }
@@ -102,38 +95,25 @@
         .btn-ghost { background: transparent; color: var(--text-muted); }
         .btn-danger { background: var(--danger); color: white; }
 
-        /* Laptop View Adjustments */
-        @media (min-width: 769px) {
-            .laptop-hide { display: none !important; }
-        }
-
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .app-grid { grid-template-columns: 1fr; }
             .mobile-header { display: flex; }
-            .sidebar {
-                position: fixed; left: 0; top: 0; bottom: 0; width: 280px; z-index: 150;
-                transform: translateX(-100%); box-shadow: 10px 0 15px rgba(0,0,0,0.1);
-            }
+            .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 280px; z-index: 150; transform: translateX(-100%); box-shadow: 10px 0 15px rgba(0,0,0,0.1); }
             .sidebar.open { transform: translateX(0); }
-            .sidebar-overlay {
-                display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 140;
-            }
+            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 140; }
             .sidebar-overlay.active { display: block; }
             .main { padding: 1rem; }
-            .toolbar { flex-direction: column; align-items: stretch; }
             #addTopicBtn { position: fixed; bottom: 20px; right: 20px; border-radius: 50px; padding: 1rem; z-index: 90; }
             #addTopicBtn span { display: none; }
         }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        mark { background: #fef08a; color: #000; border-radius: 2px; }
     </style>
 </head>
 <body>
 
     <div class="mobile-header">
-        <h3><i class="fas fa-graduation-cap"></i> Abdirahman Adan</h3>
+        <h3><i class="fas fa-graduation-cap"></i> Abdirahman</h3>
         <button class="tool-btn" onclick="ui.toggleSidebar()"><i class="fas fa-bars"></i></button>
     </div>
 
@@ -142,21 +122,21 @@
     <div class="app-grid">
         <aside class="sidebar" id="sidebar">
             <h2 style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-                <span><i class="fas fa-graduation-cap"></i> Notes</span>
-                <button class="tool-btn laptop-hide" style="border:none; background:transparent" onclick="ui.toggleSidebar()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <span><i class="fas fa-graduation-cap"></i> Abdirahman</span>
             </h2>
-            <div id="subjectList"></div>
+
+            <button class="btn btn-primary" onclick="ui.showModal('semesterModal')" style="margin-bottom: 1rem; background: var(--success);">
+                <i class="fas fa-calendar-plus"></i> + Add Semester
+            </button>
+
+            <div id="subjectList" style="flex:1; overflow-y:auto;"></div>
+            
             <button class="btn btn-primary" onclick="ui.showModal('subjectModal')" style="margin-top: 1rem;">
                 <i class="fas fa-plus"></i> New Subject
             </button>
-            <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border);">
+            <hr style="margin: 1rem 0; border: 0; border-top: 1px solid var(--border);">
             <div class="nav-item" id="trashNav" onclick="ui.setView('trash')">
                 <i class="fas fa-trash"></i> Trash
-            </div>
-            <div class="nav-item" onclick="data.exportAllJSON()">
-                <i class="fas fa-file-export"></i> Backup
             </div>
             <div class="nav-item" onclick="ui.toggleTheme()">
                 <i class="fas fa-moon"></i> 
@@ -167,12 +147,7 @@
             <div class="toolbar">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="Search..." oninput="ui.handleSearch()">
-                </div>
-                <div id="filterActions">
-                    <button class="btn btn-ghost" onclick="ui.togglePinnedFilter()">
-                        <i class="fas fa-star" id="pinFilterIcon"></i> <span>Pinned Only</span>
-                    </button>
+                    <input type="text" id="globalSearch" placeholder="Search notes..." oninput="ui.handleSearch()">
                 </div>
                 <button class="btn btn-primary" id="addTopicBtn" onclick="ui.showModal('topicModal')" style="display:none;">
                     <i class="fas fa-plus"></i> <span>Add Topic</span>
@@ -180,43 +155,44 @@
             </div>
 
             <div id="contentTitle">
-                <h1 id="viewName">Select a Subject</h1>
-                <p id="viewMeta" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;"></p>
+                <h1 id="viewName">Welcome Back</h1>
+                <p id="viewMeta" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Select a subject to view notes</p>
             </div>
 
             <div id="notesContainer"></div>
         </main>
     </div>
 
-    <div class="modal-overlay" id="subjectModal">
+    <div class="modal-overlay" id="semesterModal">
         <div class="modal-box">
-            <h3 id="subjModalTitle">New Subject</h3>
-            <input type="text" id="subjInput" style="width:100%; margin: 1rem 0; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);" placeholder="Subject Name">
+            <h3 id="semesterModalTitle">Semester</h3>
+            <input type="text" id="semesterInput" style="width:100%; margin: 1rem 0; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);" placeholder="e.g. Year 1 / Semester 2">
             <div style="display:flex; justify-content: flex-end; gap: 10px;">
                 <button class="btn btn-ghost" onclick="ui.closeModals()">Cancel</button>
-                <button class="btn btn-primary" id="subjSaveBtn" onclick="ui.saveSubject()">Save</button>
+                <button class="btn btn-primary" onclick="ui.saveSemester()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="subjectModal">
+        <div class="modal-box">
+            <h3 id="subjModalTitle">Subject</h3>
+            <select id="subjSemesterSelect" style="width:100%; margin: 1rem 0; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text);"></select>
+            <input type="text" id="subjInput" style="width:100%; margin-bottom: 1rem; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);" placeholder="Subject Name">
+            <div style="display:flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-ghost" onclick="ui.closeModals()">Cancel</button>
+                <button class="btn btn-primary" onclick="ui.saveSubject()">Save</button>
             </div>
         </div>
     </div>
 
     <div class="modal-overlay" id="topicModal">
         <div class="modal-box">
-            <h3>New Topic</h3>
+            <h3 id="topicModalTitle">Topic</h3>
             <input type="text" id="topicInput" style="width:100%; margin: 1rem 0; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);" placeholder="Topic Title">
             <div style="display:flex; justify-content: flex-end; gap: 10px;">
                 <button class="btn btn-ghost" onclick="ui.closeModals()">Cancel</button>
-                <button class="btn btn-primary" onclick="ui.saveTopic()">Create</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal-box">
-            <h3 id="confirmTitle">Are you sure?</h3>
-            <p id="confirmText" style="margin: 1rem 0; color: var(--text-muted);"></p>
-            <div style="display:flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-ghost" onclick="ui.closeModals()">Cancel</button>
-                <button class="btn btn-danger" id="confirmBtn">Confirm</button>
+                <button class="btn btn-primary" onclick="ui.saveTopic()">Save</button>
             </div>
         </div>
     </div>
@@ -225,69 +201,32 @@
         class DataManager {
             constructor() {
                 this.db = JSON.parse(localStorage.getItem('pro_notes_v3')) || {
-                    subjects: [],
-                    trash: [],
-                    settings: { theme: 'light' }
+                    semesters: [], subjects: [], trash: [], settings: { theme: 'light' }
                 };
             }
             save() { localStorage.setItem('pro_notes_v3', JSON.stringify(this.db)); }
             generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 5); }
             
-            addSubject(name) {
+            addSemester(name) {
                 const id = this.generateId();
-                this.db.subjects.push({ id, name, topics: [] });
+                this.db.semesters.push({ id, name, collapsed: false });
+                this.save();
+            }
+
+            addSubject(name, semesterId = null) {
+                const id = this.generateId();
+                this.db.subjects.push({ id, name, semesterId, topics: [] });
                 this.save();
                 return id;
             }
 
             addTopic(subjectId, title) {
                 const sub = this.db.subjects.find(s => s.id === subjectId);
-                const topic = {
-                    id: this.generateId(),
-                    title,
-                    content: '<div><br></div>',
-                    tags: [],
-                    pinned: false,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                };
-                sub.topics.push(topic);
+                sub.topics.push({
+                    id: this.generateId(), title, content: '<div><br></div>',
+                    pinned: false, updatedAt: new Date().toISOString()
+                });
                 this.save();
-            }
-
-            moveToTrash(subjectId, topicId) {
-                const sub = this.db.subjects.find(s => s.id === subjectId);
-                const idx = sub.topics.findIndex(t => t.id === topicId);
-                const [topic] = sub.topics.splice(idx, 1);
-                topic.originalSubjectId = subjectId;
-                this.db.trash.push(topic);
-                this.save();
-            }
-
-            restoreFromTrash(topicId) {
-                const idx = this.db.trash.findIndex(t => t.id === topicId);
-                const [topic] = this.db.trash.splice(idx, 1);
-                const sub = this.db.subjects.find(s => s.id === topic.originalSubjectId);
-                if (sub) { sub.topics.push(topic); } 
-                else if (this.db.subjects.length > 0) {
-                    this.db.subjects[0].topics.push(topic);
-                    topic.originalSubjectId = this.db.subjects[0].id;
-                }
-                this.save();
-            }
-
-            permanentDelete(topicId) {
-                this.db.trash = this.db.trash.filter(t => t.id !== topicId);
-                this.save();
-            }
-
-            exportAllJSON() {
-                const content = JSON.stringify(this.db);
-                const a = document.createElement("a");
-                const file = new Blob([content], { type: 'application/json' });
-                a.href = URL.createObjectURL(file);
-                a.download = 'notes_backup.json';
-                a.click();
             }
         }
 
@@ -296,149 +235,286 @@
                 this.data = data;
                 this.currentSubjectId = null;
                 this.editingSubjectId = null;
-                this.filterPinned = false;
+                this.editingTopicId = null;
+                this.editingSemesterId = null;
                 this.view = 'notes';
                 this.init();
             }
+
             init() {
                 this.renderSubjects();
                 this.applyTheme(this.data.db.settings.theme);
             }
 
-            toggleSidebar() {
-                document.getElementById('sidebar').classList.toggle('open');
-                document.getElementById('sidebarOverlay').classList.toggle('active');
-            }
-
-            showModal(id) { document.getElementById(id).classList.add('active'); }
-            closeModals() { 
-                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-                this.editingSubjectId = null;
-                document.getElementById('subjModalTitle').innerText = "New Subject";
-                document.getElementById('subjInput').value = '';
-            }
-            
+            applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); }
             toggleTheme() {
-                const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                this.applyTheme(newTheme);
-                this.data.db.settings.theme = newTheme;
+                const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                this.applyTheme(t);
+                this.data.db.settings.theme = t;
                 this.data.save();
             }
-            applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); }
-            
-            renderSubjects() {
-                const container = document.getElementById('subjectList');
-                container.innerHTML = this.data.db.subjects.map(s => `
-                    <div class="nav-item ${this.currentSubjectId === s.id && this.view === 'notes' ? 'active' : ''}" onclick="ui.selectSubject('${s.id}')">
-                        <i class="fas fa-folder"></i> 
-                        <span style="flex:1">${s.name}</span>
-                        <div class="subject-actions">
-                            <i class="fas fa-edit action-icon" onclick="event.stopPropagation(); ui.editSubject('${s.id}')"></i>
-                            <i class="fas fa-trash-alt action-icon" onclick="event.stopPropagation(); ui.deleteSubject('${s.id}')"></i>
-                        </div>
-                    </div>
-                `).join('');
-                document.getElementById('trashNav').classList.toggle('active', this.view === 'trash');
-            }
 
-            selectSubject(id) {
-                this.view = 'notes';
-                this.currentSubjectId = id;
-                const sub = this.data.db.subjects.find(s => s.id === id);
-                document.getElementById('viewName').innerText = sub.name;
-                document.getElementById('addTopicBtn').style.display = 'inline-flex';
-                this.renderSubjects();
-                this.renderNotes();
-                if(window.innerWidth <= 768) this.toggleSidebar();
-            }
-
-            editSubject(id) {
-                const sub = this.data.db.subjects.find(s => s.id === id);
-                this.editingSubjectId = id;
-                document.getElementById('subjModalTitle').innerText = "Edit Subject";
-                document.getElementById('subjInput').value = sub.name;
-                this.showModal('subjectModal');
-            }
-
-            deleteSubject(id) {
-                const sub = this.data.db.subjects.find(s => s.id === id);
-                document.getElementById('confirmText').innerText = `Are you sure you want to delete "${sub.name}"? This will permanently delete all topics inside it.`;
-                this.showModal('confirmModal');
-                document.getElementById('confirmBtn').onclick = () => {
-                    this.data.db.subjects = this.data.db.subjects.filter(s => s.id !== id);
-                    if (this.currentSubjectId === id) {
-                        this.currentSubjectId = null;
-                        document.getElementById('viewName').innerText = "Select a Subject";
-                        document.getElementById('addTopicBtn').style.display = 'none';
+            showModal(id, editId = null) {
+                if (id === 'semesterModal') {
+                    if (editId) {
+                        const sem = this.data.db.semesters.find(s => s.id === editId);
+                        document.getElementById('semesterInput').value = sem.name;
+                        this.editingSemesterId = editId;
+                    } else {
+                        document.getElementById('semesterInput').value = "";
+                        this.editingSemesterId = null;
                     }
-                    this.data.save();
-                    this.renderSubjects();
-                    this.renderNotes();
-                    this.closeModals();
-                };
+                }
+                if (id === 'subjectModal') {
+                    this.populateSemesterSelect();
+                    if(editId) {
+                        const sub = this.data.db.subjects.find(s => s.id === editId);
+                        document.getElementById('subjInput').value = sub.name;
+                        document.getElementById('subjSemesterSelect').value = sub.semesterId || "";
+                        this.editingSubjectId = editId;
+                    } else {
+                        document.getElementById('subjInput').value = "";
+                        this.editingSubjectId = null;
+                    }
+                }
+                if (id === 'topicModal') {
+                    if(editId) {
+                        const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
+                        const top = sub.topics.find(t => t.id === editId);
+                        document.getElementById('topicInput').value = top.title;
+                        this.editingTopicId = editId;
+                    } else {
+                        document.getElementById('topicInput').value = "";
+                        this.editingTopicId = null;
+                    }
+                }
+                document.getElementById(id).classList.add('active');
+            }
+
+            closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+
+            populateSemesterSelect() {
+                const s = document.getElementById('subjSemesterSelect');
+                s.innerHTML = '<option value="">No Semester</option>' + 
+                    this.data.db.semesters.map(sem => `<option value="${sem.id}">${sem.name}</option>`).join('');
+            }
+
+            saveSemester() {
+                const val = document.getElementById('semesterInput').value.trim();
+                if(!val) return;
+                
+                if (this.editingSemesterId) {
+                    const sem = this.data.db.semesters.find(s => s.id === this.editingSemesterId);
+                    sem.name = val;
+                } else {
+                    this.data.addSemester(val);
+                }
+                this.data.save();
+                this.closeModals();
+                this.renderSubjects();
             }
 
             saveSubject() {
-                const name = document.getElementById('subjInput').value.trim();
-                if (!name) return;
-
-                if (this.editingSubjectId) {
-                    const sub = this.data.db.subjects.find(s => s.id === this.editingSubjectId);
-                    sub.name = name;
-                    if (this.currentSubjectId === this.editingSubjectId) {
-                        document.getElementById('viewName').innerText = name;
-                    }
-                } else {
-                    const id = this.data.addSubject(name);
-                    this.currentSubjectId = id;
-                }
+                const val = document.getElementById('subjInput').value.trim();
+                const semId = document.getElementById('subjSemesterSelect').value;
+                if(!val) return;
                 
+                if(this.editingSubjectId) {
+                    const sub = this.data.db.subjects.find(s => s.id === this.editingSubjectId);
+                    sub.name = val;
+                    sub.semesterId = semId;
+                } else {
+                    this.currentSubjectId = this.data.addSubject(val, semId);
+                }
+                this.data.save();
+                this.closeModals();
+                this.renderSubjects();
+                if(this.currentSubjectId) this.selectSubject(this.currentSubjectId);
+            }
+
+            saveTopic() {
+                const val = document.getElementById('topicInput').value.trim();
+                if(!val || !this.currentSubjectId) return;
+
+                if(this.editingTopicId) {
+                    const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
+                    const top = sub.topics.find(t => t.id === this.editingTopicId);
+                    top.title = val;
+                } else {
+                    this.data.addTopic(this.currentSubjectId, val);
+                }
+                this.data.save();
+                this.closeModals();
+                this.renderNotes();
+            }
+
+            deleteSemester(id, e) {
+                e.stopPropagation();
+                if(confirm('Delete this semester? Subjects inside will be moved to "Others".')) {
+                    this.data.db.subjects.forEach(s => {
+                        if(s.semesterId === id) s.semesterId = null;
+                    });
+                    this.data.db.semesters = this.data.db.semesters.filter(s => s.id !== id);
+                    this.data.save();
+                    this.renderSubjects();
+                }
+            }
+
+            deleteSubject(id, e) {
+                e.stopPropagation();
+                if(confirm('Delete this subject and all its notes?')) {
+                    this.data.db.subjects = this.data.db.subjects.filter(s => s.id !== id);
+                    if(this.currentSubjectId === id) this.currentSubjectId = null;
+                    this.data.save();
+                    this.renderSubjects();
+                    this.renderNotes();
+                }
+            }
+
+            deleteTopic(id, e) {
+                e.stopPropagation();
+                const isTrash = this.view === 'trash';
+                const msg = isTrash ? 'Permanently delete this note?' : 'Move this note to trash?';
+                
+                if(confirm(msg)) {
+                    if (isTrash) {
+                        this.data.db.trash = this.data.db.trash.filter(t => t.id !== id);
+                    } else {
+                        const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
+                        const topicIdx = sub.topics.findIndex(t => t.id === id);
+                        const [topic] = sub.topics.splice(topicIdx, 1);
+                        this.data.db.trash.push(topic);
+                    }
+                    this.data.save();
+                    this.renderNotes();
+                }
+            }
+
+            restoreTopic(id, e) {
+                e.stopPropagation();
+                const topicIdx = this.data.db.trash.findIndex(t => t.id === id);
+                if (topicIdx > -1) {
+                    const [topic] = this.data.db.trash.splice(topicIdx, 1);
+                    let targetSub = this.data.db.subjects.find(s => s.id === this.currentSubjectId) || this.data.db.subjects[0];
+                    
+                    if (targetSub) {
+                        targetSub.topics.push(topic);
+                        this.data.save();
+                        this.renderNotes();
+                        alert(`Restored to: ${targetSub.name}`);
+                    } else {
+                        alert("Please create a subject first to restore notes.");
+                        this.data.db.trash.push(topic); 
+                    }
+                }
+            }
+
+            toggleSemester(id) {
+                const sem = this.data.db.semesters.find(s => s.id === id);
+                sem.collapsed = !sem.collapsed;
                 this.data.save();
                 this.renderSubjects();
-                this.closeModals();
             }
 
-            setView(view) {
-                this.view = view;
-                this.currentSubjectId = null;
-                document.getElementById('viewName').innerText = view === 'trash' ? 'Trash Bin' : 'All Notes';
-                document.getElementById('addTopicBtn').style.display = 'none';
+            renderSubjects() {
+                const container = document.getElementById('subjectList');
+                let html = '';
+                this.data.db.semesters.forEach(sem => {
+                    const subs = this.data.db.subjects.filter(s => s.semesterId === sem.id);
+                    html += `
+                        <div class="semester-group ${sem.collapsed ? 'collapsed' : ''}">
+                            <div class="semester-header" onclick="ui.toggleSemester('${sem.id}')">
+                                <span><i class="fas fa-chevron-down"></i> ${sem.name}</span>
+                                <div class="semester-actions">
+                                    <i class="fas fa-edit action-icon" onclick="event.stopPropagation(); ui.showModal('semesterModal', '${sem.id}')"></i>
+                                    <i class="fas fa-trash action-icon" onclick="ui.deleteSemester('${sem.id}', event)"></i>
+                                </div>
+                            </div>
+                            <div class="subject-list-container">
+                                ${subs.map(s => `
+                                    <div class="nav-item ${this.currentSubjectId === s.id ? 'active' : ''}" onclick="ui.selectSubject('${s.id}')">
+                                        <i class="fas fa-folder"></i> ${s.name}
+                                        <div class="subject-actions">
+                                            <i class="fas fa-edit action-icon" onclick="ui.showModal('subjectModal', '${s.id}')"></i>
+                                            <i class="fas fa-trash action-icon" onclick="ui.deleteSubject('${s.id}', event)"></i>
+                                        </div>
+                                    </div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                const ungrouped = this.data.db.subjects.filter(s => !s.semesterId);
+                if(ungrouped.length) {
+                    html += `<div class="semester-header">Others</div>` + ungrouped.map(s => `
+                        <div class="nav-item ${this.currentSubjectId === s.id ? 'active' : ''}" onclick="ui.selectSubject('${s.id}')">
+                            <i class="fas fa-folder"></i> ${s.name}
+                            <div class="subject-actions">
+                                <i class="fas fa-edit action-icon" onclick="ui.showModal('subjectModal', '${s.id}')"></i>
+                                <i class="fas fa-trash action-icon" onclick="ui.deleteSubject('${s.id}', event)"></i>
+                            </div>
+                        </div>`).join('');
+                }
+                container.innerHTML = html;
+            }
+
+            selectSubject(id) {
+                this.currentSubjectId = id;
+                this.view = 'notes';
+                const sub = this.data.db.subjects.find(s => s.id === id);
+                document.getElementById('viewName').innerText = sub ? sub.name : 'Welcome Back';
+                document.getElementById('addTopicBtn').style.display = sub ? 'block' : 'none';
+                
+                // Auto-hide sidebar on mobile
+                if (window.innerWidth <= 768) {
+                    this.toggleSidebar();
+                }
+
                 this.renderSubjects();
                 this.renderNotes();
-                if(window.innerWidth <= 768) this.toggleSidebar();
             }
 
-            renderNotes(filterQuery = '') {
+            setView(v) {
+                this.view = v;
+                this.currentSubjectId = null;
+                document.getElementById('viewName').innerText = v === 'trash' ? 'Trash Bin' : 'All Notes';
+                document.getElementById('addTopicBtn').style.display = 'none';
+                
+                // Auto-hide sidebar on mobile when Trash is clicked
+                if (window.innerWidth <= 768) {
+                    this.toggleSidebar();
+                }
+
+                this.renderNotes();
+                this.renderSubjects();
+            }
+
+            exec(cmd, val = null) { document.execCommand(cmd, false, val); }
+
+            renderNotes() {
                 const container = document.getElementById('notesContainer');
                 let topics = [];
-                if (this.view === 'notes' && this.currentSubjectId) {
+                if(this.view === 'notes' && this.currentSubjectId) {
                     const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
-                    topics = [...sub.topics];
-                } else if (this.view === 'trash') {
-                    topics = [...this.data.db.trash];
+                    topics = sub ? sub.topics : [];
+                } else if(this.view === 'trash') {
+                    topics = this.data.db.trash;
                 }
-                topics.sort((a, b) => (b.pinned - a.pinned) || new Date(b.updatedAt) - new Date(a.updatedAt));
-                if (this.filterPinned) topics = topics.filter(t => t.pinned);
-                const query = filterQuery.toLowerCase();
-                if (query) {
-                    topics = topics.filter(t => t.title.toLowerCase().includes(query) || t.content.toLowerCase().includes(query));
-                }
-                container.innerHTML = topics.length ? topics.map(t => this.createNoteCard(t)).join('') : '<div class="empty-state">No notes found.</div>';
+                container.innerHTML = topics.length ? topics.map(t => this.createNoteCard(t)).join('') : '<p style="text-align:center; color:var(--text-muted)">Empty</p>';
             }
 
             createNoteCard(topic) {
                 const isTrash = this.view === 'trash';
                 return `
-                    <div class="topic-card ${topic.pinned ? 'pinned' : ''}" id="card-${topic.id}">
+                    <div class="topic-card" id="card-${topic.id}">
                         <div class="card-header" onclick="ui.toggleCard('${topic.id}')">
                             <div>
-                                <h3 class="topic-title">${this.highlight(topic.title)}</h3>
-                                <small style="color:var(--text-muted)">Updated ${new Date(topic.updatedAt).toLocaleDateString()}</small>
+                                <h3>${topic.title}</h3>
+                                <small>Updated ${new Date(topic.updatedAt).toLocaleDateString()}</small>
                             </div>
-                            <div style="display:flex; gap: 15px; align-items:center;">
-                                ${isTrash ? `<i class="fas fa-undo" style="color:var(--success)" onclick="event.stopPropagation(); ui.restoreNote('${topic.id}')"></i>` : ''}
-                                ${!isTrash ? `<i class="${topic.pinned ? 'fas' : 'far'} fa-star" style="color:var(--favorite)" onclick="event.stopPropagation(); ui.togglePin('${topic.id}')"></i>` : ''}
-                                <i class="fas fa-trash" onclick="event.stopPropagation(); ui.confirmNoteDelete('${topic.id}')"></i>
+                            <div style="display:flex; gap:15px; align-items:center;">
+                                ${isTrash ? `<i class="fas fa-undo" style="color:var(--success)" onclick="ui.restoreTopic('${topic.id}', event)" title="Restore"></i>` : ''}
+                                ${!isTrash ? `<i class="fas fa-edit" style="color:var(--text-muted)" onclick="event.stopPropagation(); ui.showModal('topicModal', '${topic.id}')"></i>` : ''}
+                                <i class="fas fa-trash" style="color:var(--danger)" onclick="ui.deleteTopic('${topic.id}', event)"></i>
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                         </div>
@@ -447,10 +523,14 @@
                             <div class="editor-tools">
                                 <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('bold')"><b>B</b></button>
                                 <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('italic')"><i>I</i></button>
+                                <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('formatBlock', 'h1')">H1</button>
+                                <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('formatBlock', 'h2')">H2</button>
+                                <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
                                 <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
-                                <button class="tool-btn" onmousedown="event.preventDefault(); ui.exec('formatBlock', 'H2')"><b>H</b></button>
-                                <input type="color" class="tool-btn" style="padding:0; width:36px;" oninput="ui.exec('foreColor', this.value)">
-                                <button class="tool-btn" onclick="ui.exportPDF('${topic.id}')"><i class="fas fa-file-pdf"></i></button>
+                                <div class="tool-btn" style="position:relative;">
+                                    <i class="fas fa-palette"></i>
+                                    <input type="color" onchange="ui.exec('foreColor', this.value)" style="position:absolute; opacity:0; inset:0; cursor:pointer;">
+                                </div>
                             </div>
                             ` : ''}
                             <div class="rich-editor" ${!isTrash ? 'contenteditable="true"' : ''} oninput="ui.autoSave('${topic.id}', this)">
@@ -461,82 +541,27 @@
                 `;
             }
 
-            highlight(text) {
-                const query = document.getElementById('globalSearch').value.trim();
-                if (!query) return text;
-                return text.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
-            }
-
-            exec(cmd, val = null) { document.execCommand(cmd, false, val); }
             toggleCard(id) { document.getElementById(`body-${id}`).classList.toggle('open'); }
-            handleSearch() { this.renderNotes(document.getElementById('globalSearch').value); }
             
-            togglePinnedFilter() {
-                this.filterPinned = !this.filterPinned;
-                document.getElementById('pinFilterIcon').style.color = this.filterPinned ? 'var(--favorite)' : 'inherit';
-                this.renderNotes();
-            }
-
-            saveTopic() {
-                const title = document.getElementById('topicInput').value.trim();
-                if (!title) return;
-                this.data.addTopic(this.currentSubjectId, title);
-                document.getElementById('topicInput').value = '';
-                this.closeModals();
-                this.renderNotes();
-            }
-
             autoSave(id, el) {
                 if (this.view === 'trash') return;
                 const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
-                const topic = sub.topics.find(t => t.id === id);
-                topic.content = el.innerHTML;
-                topic.updatedAt = new Date().toISOString();
+                const t = sub.topics.find(top => top.id === id);
+                t.content = el.innerHTML;
+                t.updatedAt = new Date().toISOString();
                 this.data.save();
             }
 
-            togglePin(id) {
-                const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
-                const topic = sub.topics.find(t => t.id === id);
-                topic.pinned = !topic.pinned;
-                this.data.save();
-                this.renderNotes();
-            }
-
-            restoreNote(id) {
-                this.data.restoreFromTrash(id);
-                this.renderNotes();
-            }
-
-            confirmNoteDelete(id) {
-                const isTrash = this.view === 'trash';
-                document.getElementById('confirmText').innerText = isTrash ? "This will delete the note permanently." : "This will move the note to trash.";
-                this.showModal('confirmModal');
-                document.getElementById('confirmBtn').onclick = () => {
-                    if (isTrash) {
-                        this.data.permanentDelete(id);
-                    } else {
-                        this.data.moveToTrash(this.currentSubjectId, id);
-                    }
-                    this.closeModals();
-                    this.renderNotes();
-                };
-            }
-
-            exportPDF(id) {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                const sub = this.data.db.subjects.find(s => s.id === this.currentSubjectId);
-                const topic = sub.topics.find(t => t.id === id);
-                doc.setFontSize(20);
-                doc.text(topic.title, 10, 20);
-                doc.setFontSize(10);
-                doc.text(`Updated: ${new Date(topic.updatedAt).toLocaleDateString()}`, 10, 28);
-                doc.line(10, 32, 200, 32);
-                doc.setFontSize(12);
-                const text = topic.content.replace(/<[^>]*>/g, ' ');
-                doc.text(text, 10, 40, { maxWidth: 180 });
-                doc.save(`${topic.title}.pdf`);
+            toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                } else {
+                    sidebar.classList.add('open');
+                    overlay.classList.add('active');
+                }
             }
         }
 
